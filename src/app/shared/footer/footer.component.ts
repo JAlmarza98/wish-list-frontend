@@ -7,7 +7,7 @@ import { MATERIAL_MODULES } from '@shared/material.module';
   imports: [MATERIAL_MODULES],
   template: `
     <mat-toolbar>
-      <span>developed by Joel Almarza, 2024</span>
+      <span>developed by Joel Almarza, 2026</span>
     </mat-toolbar>
   `,
   styles: [`
