@@ -14,10 +14,13 @@
         <td
           mat-cell
           *matCellDef="let element"
-          class="m-card-title"
+          class="m-card-title gift-cell"
           test
           data-label="Regalo"
         >
+          @if (element.image) {
+            <img class="gift-thumbnail" [src]="element.image" alt="" />
+          }
           @if (element.url === undefined || element.url === null || element.url ==='') {
           {{ element.title }}
           }@else {

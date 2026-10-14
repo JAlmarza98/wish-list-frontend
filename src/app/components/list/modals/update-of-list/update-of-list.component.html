@@ -27,6 +27,21 @@
           <input matInput formControlName="url" />
         </mat-form-field>
       </div>
+
+      <div>
+        <button mat-stroked-button type="button" (click)="imageInput.click()">
+          <mat-icon>image</mat-icon> {{ imagePreviewUrl ? 'Cambiar imagen' : 'Añadir imagen' }}
+        </button>
+        @if (imagePreviewUrl) {
+          <button mat-icon-button type="button" (click)="clearImage()" matTooltip="Quitar imagen">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+        <input #imageInput type="file" accept="image/*" hidden (change)="onImageSelected($event)" />
+        @if (imagePreviewUrl) {
+          <img class="image-preview" [src]="imagePreviewUrl" alt="Previsualización" />
+        }
+      </div>
     </div>
   </form>
 </mat-dialog-content>
@@ -34,7 +49,7 @@
   <button mat-button mat-dialog-close>Cancelar</button>
   <button
     mat-flat-button
-    [mat-dialog-close]="updateOfList.value"
+    (click)="submit()"
     [disabled]="updateOfList.invalid"
   >
     Modificar artículo

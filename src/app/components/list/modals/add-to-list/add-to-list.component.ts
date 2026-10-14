@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle, } from '@angular/material/dialog';
+import { MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle, } from '@angular/material/dialog';
 import { MATERIAL_MODULES } from '@shared/material.module';
 
 export interface AddToListForm {
@@ -9,20 +9,31 @@ export interface AddToListForm {
   url: FormControl<string>;
 }
 
+export interface AddToListResult {
+  title: string;
+  description: string;
+  url: string;
+  image: File | null;
+}
+
 @Component({
   selector: 'app-add-to-list',
   standalone: true,
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MATERIAL_MODULES, ReactiveFormsModule],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MATERIAL_MODULES, ReactiveFormsModule],
   templateUrl: './add-to-list.component.html',
   styles: [`
     mat-form-field {width: 100%;}
+    .image-preview { width: 160px; height: 160px; object-fit: cover; display: block; margin-top: 8px; border-radius: 4px; }
   `]
 })
 export class AddToListComponent implements OnInit {
 
   addToListForm!: FormGroup<AddToListForm>;
+  selectedImage: File | null = null;
+  imagePreviewUrl: string | null = null;
 
   private fb = inject(FormBuilder);
+  private dialogRef = inject(MatDialogRef<AddToListComponent>);
 
   ngOnInit(): void {
     this.addToListForm = this.fb.group({
@@ -39,5 +50,16 @@ export class AddToListComponent implements OnInit {
         nonNullable: true,
       })
     });
+  }
+
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
+    this.selectedImage = file;
+    this.imagePreviewUrl = file ? URL.createObjectURL(file) : null;
+  }
+
+  submit(): void {
+    const result: AddToListResult = { ...this.addToListForm.getRawValue(), image: this.selectedImage };
+    this.dialogRef.close(result);
   }
 }

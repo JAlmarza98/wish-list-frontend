@@ -26,6 +26,20 @@ mat-form-field {
   height: 50px;
 }
 
+.gift-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gift-thumbnail {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
 @media screen and (max-width: 960px) {
   .mat-elevation-z8 {
     background: transparent;

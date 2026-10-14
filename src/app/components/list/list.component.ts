@@ -7,7 +7,7 @@ import { WishesService } from 'src/app/services/wishes.service';
 import { GroupsService } from 'src/app/services/groups.service';
 import { SnackbarService } from '@shared/snackbar/snackbar.service';
 import { TableAction, TableComponent } from '@shared/table/table.component';
-import { AddToListComponent, CreateWishlistComponent, DeleteFromListComponent, UpdateOfListComponent } from './modals';
+import { AddToListComponent, AddToListResult, CreateWishlistComponent, DeleteFromListComponent, UpdateOfListComponent, UpdateOfListResult } from './modals';
 import { Group } from '@components/groups/groups.component';
 import { forkJoin } from 'rxjs';
 
@@ -15,6 +15,7 @@ export interface Wish {
   title: string;
   description: string;
   url: string;
+  image?: string;
   date: string;
   id: string;
   reserved?: Reserved;
@@ -164,20 +165,30 @@ export class ListComponent implements OnInit {
 
   openInsertDialog(): void {
     if (!this.selectedWishlist) return;
-    this.dialog.open(AddToListComponent, { width: '500px' }).afterClosed().subscribe(result => {
-      if (result === undefined || result === '') return;
+    this.dialog.open(AddToListComponent, { width: '500px' }).afterClosed().subscribe((result: AddToListResult) => {
+      if (!result) return;
       this._loader.ShowLoader();
       this.reloadTable = false;
 
-      this.wishlistsService.addWish(this.selectedWishlist!.id, result).subscribe(() => {
-        this._snackbar.showSnackBar('Nuevo elemento añadido', 'succes');
-        this.selectWishlist(this.selectedWishlist!);
-      }, (err) => {
+      const { image, ...wishData } = result;
+      const onError = (err: any) => {
         console.log(err);
         this._snackbar.showSnackBar('Error al añadir a tu lista', 'error');
         this._loader.HideLoader();
         this.reloadTable = true;
-      });
+      };
+      const onDone = () => {
+        this._snackbar.showSnackBar('Nuevo elemento añadido', 'succes');
+        this.selectWishlist(this.selectedWishlist!);
+      };
+
+      this.wishlistsService.addWish(this.selectedWishlist!.id, wishData).subscribe((wish) => {
+        if (image) {
+          this.wishesService.uploadImage(wish.id, image).subscribe(onDone, onError);
+        } else {
+          onDone();
+        }
+      }, onError);
     });
   }
 
@@ -185,20 +196,32 @@ export class ListComponent implements OnInit {
     this.dialog.open(UpdateOfListComponent, {
       width: '500px',
       data: { row },
-    }).afterClosed().subscribe(result => {
-      if (result === undefined || result === '') return;
+    }).afterClosed().subscribe((result: UpdateOfListResult) => {
+      if (!result) return;
       this._loader.ShowLoader();
       this.reloadTable = false;
 
-      this.wishesService.update(row.id, result).subscribe(() => {
-        this._snackbar.showSnackBar('Elemento actualizado', 'succes');
-        this.selectWishlist(this.selectedWishlist!);
-      }, (err) => {
+      const { image, removeImage, ...wishData } = result;
+      const onError = (err: any) => {
         console.log(err);
         this._snackbar.showSnackBar('Error al actualizar tu lista', 'error');
         this._loader.HideLoader();
         this.reloadTable = true;
-      });
+      };
+      const onDone = () => {
+        this._snackbar.showSnackBar('Elemento actualizado', 'succes');
+        this.selectWishlist(this.selectedWishlist!);
+      };
+
+      this.wishesService.update(row.id, wishData).subscribe(() => {
+        if (image) {
+          this.wishesService.uploadImage(row.id, image).subscribe(onDone, onError);
+        } else if (removeImage) {
+          this.wishesService.deleteImage(row.id).subscribe(onDone, onError);
+        } else {
+          onDone();
+        }
+      }, onError);
     });
   }
 

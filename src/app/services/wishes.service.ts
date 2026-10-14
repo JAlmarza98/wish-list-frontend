@@ -27,4 +27,14 @@ export class WishesService {
   unreserve(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}/reserve`);
   }
+
+  uploadImage(id: string, image: File): Observable<Wish> {
+    const formData = new FormData();
+    formData.append('image', image);
+    return this.http.post<any>(`${this.baseUrl}/${id}/image`, formData).pipe(map(mapWish));
+  }
+
+  deleteImage(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}/image`);
+  }
 }
