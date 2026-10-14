@@ -1,7 +1,12 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Wish List</mat-card-title>
-    <mat-card-subtitle>Inicia sesión</mat-card-subtitle>
+    <div class="brand-row">
+      <img class="brand-icon" src="icons/icon-96.png" alt="" width="40" height="40" />
+      <div>
+        <mat-card-title>Wishu</mat-card-title>
+        <mat-card-subtitle>Inicia sesión</mat-card-subtitle>
+      </div>
+    </div>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="loginForm" (ngSubmit)="logIn()">
