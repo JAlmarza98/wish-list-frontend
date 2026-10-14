@@ -22,6 +22,14 @@
 
         <div>
           <mat-form-field>
+            <mat-label>Nombre de usuario</mat-label>
+            <input matInput formControlName="username" />
+            <mat-error>Este campo es obligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field>
             <mat-label>Contraseña</mat-label>
             <input
               matInput
@@ -35,7 +43,12 @@
             >
               <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
             </button>
-            <mat-error>Este campo es obligatorio</mat-error>
+            @if (this.registerForm.controls['password'].hasError('required')) {
+              <mat-error>Este campo es obligatorio</mat-error>
+            }
+            @if (!this.registerForm.controls['password'].hasError('required') && this.registerForm.controls['password'].hasError('minlength')) {
+              <mat-error>La contraseña debe tener al menos 8 caracteres</mat-error>
+            }
           </mat-form-field>
         </div>
       </div>
@@ -48,8 +61,6 @@
     </form>
     <hr />
     <div class="actions">
-      <span class="small-text providers">¿Tienes cuenta de Google?</span>
-      <app-button-provider [isLogin]="false" />
       <span class="small-text log-in-redirect">
         ¿Ya estas registrado?
         <a routerLink="/auth/login">Inicia sesión</a>

@@ -27,7 +27,7 @@ export class UpdateOfListComponent {
         validators: [Validators.required],
         nonNullable: true,
       }),
-      description: this.fb.control(this.data.row.descripton, {
+      description: this.fb.control(this.data.row.description, {
         validators: [],
         nonNullable: true,
       }),

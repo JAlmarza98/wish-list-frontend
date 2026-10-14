@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Crear lista</h2>
+<mat-dialog-content>
+  <form [formGroup]="createWishlistForm">
+    <div class="form">
+      <div>
+        <mat-form-field>
+          <mat-label>Nombre de la lista</mat-label>
+          <input matInput formControlName="name" placeholder="Cumpleaños, Navidad..." />
+          <mat-error>Este campo es obligatorio</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button
+    mat-flat-button
+    [mat-dialog-close]="createWishlistForm.value"
+    [disabled]="createWishlistForm.invalid"
+  >
+    Crear lista
+  </button>
+</mat-dialog-actions>

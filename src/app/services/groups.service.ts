@@ -1,49 +1,25 @@
-import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, CollectionReference, doc, DocumentData, Firestore, query, updateDoc, where } from '@angular/fire/firestore';
-import { AuthService } from '@auth/auth.service';
-import { Group } from '@components/groups/groups.component';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '@envs/environment';
+import { Group, GroupDetail } from '@components/groups/groups.component';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupsService {
-  private listCollection: CollectionReference<DocumentData>;
-
-  constructor(
-    private auth: AuthService,
-    private readonly firestore: Firestore
-  ) {
-    this.listCollection = collection(this.firestore, 'groups');
-  }
+  private http = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/groups`;
 
   getMyGroups(): Observable<Group[]> {
-    const uid = this.auth.UserData.uid;
-    return collectionData(query(this.listCollection, where('members', 'array-contains', uid)), {
-      idField: 'id',
-    }) as Observable<Group[]>;
+    return this.http.get<Group[]>(this.baseUrl);
   }
 
-  createGroup(group: Group) {
-    return addDoc(this.listCollection, group);
+  createGroup(name: string): Observable<Group> {
+    return this.http.post<Group>(this.baseUrl, { name });
   }
 
-  getGroupInfo(id: string) {
-    return collectionData(query(this.listCollection, where('uid', '==', id)), {
-      idField: 'id',
-    }) as Observable<Group[]>;
+  getGroupInfo(id: string): Observable<GroupDetail> {
+    return this.http.get<GroupDetail>(`${this.baseUrl}/${id}`);
   }
-
-  addToGroup(id: string, groupData: Group) {
-    const newMemberList = [...groupData.members];
-    newMemberList.push(id);
-    const serviceDocumentReference = doc(
-      this.firestore,
-      `groups/${groupData.id}`
-    );
-
-    return updateDoc(serviceDocumentReference, { members: newMemberList });
-
-  }
-
 }

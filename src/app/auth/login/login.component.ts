@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService, Credential } from '@auth/auth.service';
-import { ButtonProviderComponent } from '@auth/components';
 import { MATERIAL_MODULES } from '@shared/material.module';
 import { SnackbarService } from '@shared/snackbar/snackbar.service';
 
@@ -15,7 +14,6 @@ interface LogInForm {
   selector: 'app-login',
   standalone: true,
   imports: [
-    ButtonProviderComponent,
     MATERIAL_MODULES,
     ReactiveFormsModule,
     RouterLink,
@@ -46,7 +44,7 @@ export class LoginComponent {
     });
   }
 
-  async logIn(): Promise<void> {
+  logIn(): void {
     if (this.loginForm.invalid) return;
 
     const credential: Credential = {
@@ -54,14 +52,15 @@ export class LoginComponent {
       password: this.loginForm.value.password || '',
     };
 
-    try {
-      const response = await this.auth.logInWithEmailAndPassword(credential);
-
-      this.snackBar.showSnackBar('Se ha registrado correctamente', 'succes');
-      this._router.navigateByUrl('/');
-    } catch (error) {
-      console.error(error);
-      this.snackBar.showSnackBar('Esas credenciales no son validas', 'error');
-    }
+    this.auth.logInWithEmailAndPassword(credential).subscribe({
+      next: () => {
+        this.snackBar.showSnackBar('Se ha iniciado sesión correctamente', 'succes');
+        this._router.navigateByUrl('/');
+      },
+      error: (error) => {
+        console.error(error);
+        this.snackBar.showSnackBar('Esas credenciales no son validas', 'error');
+      },
+    });
   }
 }

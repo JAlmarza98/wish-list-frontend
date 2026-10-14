@@ -1,68 +1,74 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Auth, AuthProvider, authState, createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { environment } from '@envs/environment';
 
 export interface Credential {
   email: string;
   password: string;
 }
 
+export interface RegisterPayload extends Credential {
+  username: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  mustChangePassword: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  UserData: any;
-  private auth: Auth = inject(Auth);
-  readonly authState$ = authState(this.auth);
+  private http = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/auth`;
+  private userSubject = new BehaviorSubject<User | null>(null);
 
-  constructor() {
-    onAuthStateChanged(this.auth, (user: any) => {
-      if (user) {
-        this.UserData = user;
-        localStorage.setItem('user', JSON.stringify(this.UserData));
-        JSON.parse(localStorage.getItem('user')!);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
-      }
-    });
+  readonly authState$ = this.userSubject.asObservable();
+
+  get UserData(): User | null {
+    return this.userSubject.value;
   }
 
-  signUpWithEmailAndPassword(credential: Credential): Promise<UserCredential> {
-    return createUserWithEmailAndPassword(
-      this.auth,
-      credential.email,
-      credential.password
+  loadCurrentUser(): Observable<User | null> {
+    return this.http.get<User>(`${this.baseUrl}/me`).pipe(
+      tap((user) => this.userSubject.next(user)),
+      catchError(() => {
+        this.userSubject.next(null);
+        return of(null);
+      })
     );
   }
 
-  logInWithEmailAndPassword(credential: Credential) {
-    return signInWithEmailAndPassword(
-      this.auth,
-      credential.email,
-      credential.password
-    );
+  registerWithEmailAndPassword(payload: RegisterPayload): Observable<User> {
+    return this.http
+      .post<User>(`${this.baseUrl}/register`, payload)
+      .pipe(tap((user) => this.userSubject.next(user)));
   }
 
-  logOut(): Promise<void> {
-    return this.auth.signOut();
+  logInWithEmailAndPassword(credential: Credential): Observable<User> {
+    return this.http
+      .post<User>(`${this.baseUrl}/login`, credential)
+      .pipe(tap((user) => this.userSubject.next(user)));
   }
 
-  // providers
-
-  signInWithGoogleProvider(): Promise<UserCredential> {
-    const provider = new GoogleAuthProvider();
-
-    return this.callPopUp(provider);
+  logOut(): Observable<void> {
+    return this.http
+      .post<void>(`${this.baseUrl}/logout`, {})
+      .pipe(tap(() => this.userSubject.next(null)));
   }
 
-  async callPopUp(provider: AuthProvider): Promise<UserCredential> {
-    try {
-      const result = await signInWithPopup(this.auth, provider);
-
-      return result;
-    } catch (error: any) {
-      return error;
-    }
+  changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    return this.http
+      .post<void>(`${this.baseUrl}/change-password`, { currentPassword, newPassword })
+      .pipe(
+        tap(() => {
+          const current = this.userSubject.value;
+          if (current) this.userSubject.next({ ...current, mustChangePassword: false });
+        })
+      );
   }
-
 }

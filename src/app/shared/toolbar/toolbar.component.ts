@@ -25,12 +25,10 @@ export class ToolbarComponent {
   private _router = inject(Router);
   private auth = inject(AuthService)
 
-  async logOut(): Promise<void> {
-    try {
-      await this.auth.logOut();
-      this._router.navigateByUrl('/auth/log-in');
-    } catch (error) {
-      console.log(error);
-    }
+  logOut(): void {
+    this.auth.logOut().subscribe({
+      next: () => this._router.navigateByUrl('/auth/login'),
+      error: (error) => console.log(error),
+    });
   }
 }

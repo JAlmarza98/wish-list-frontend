@@ -1,28 +1,60 @@
 @if(loadData) {
   <div class="container">
-    @if(wishListExist && wishList !== undefined){
-    <div class="table-actions">
-      <button mat-raised-button (click)="openInsertDialog()">
-        <mat-icon>add</mat-icon> Añadir a la lista
-      </button>
-    </div>
-    }
+    @if (selectedWishlist === null) {
+      <div class="table-actions">
+        <button mat-raised-button (click)="createWishlist()">
+          <mat-icon>add</mat-icon> Crear lista
+        </button>
+      </div>
 
-    <div class="table">
-      @if(wishListExist){
-        @if(reloadTable){
-          <app-table [data]="wishList" [isGroup]='false' (tableActionEvent)="tableAction($event)"></app-table>
-        }
-      } @else {
+      @if (wishlists.length === 0) {
         <div class="no-list-container">
           <div class="no-list">
-            <span>Parece que todavia no tienes una lista</span>
-            <button mat-flat-button (click)="createYourList()">
-              Crear tu lista
+            <span>Parece que todavia no tienes ninguna lista</span>
+            <button mat-flat-button (click)="createWishlist()">
+              Crear tu primera lista
             </button>
           </div>
         </div>
+      } @else {
+        <div class="groups-container">
+          @for (wishlist of wishlists; track wishlist.id) {
+            <mat-card matRipple (click)="selectWishlist(wishlist)">
+              <mat-card-title>{{ wishlist.name }}</mat-card-title>
+              <button mat-icon-button (click)="$event.stopPropagation(); deleteWishlist(wishlist)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card>
+          }
+        </div>
       }
-    </div>
+    } @else {
+      <div class="table-actions">
+        <button mat-button (click)="backToWishlists()">
+          <mat-icon>arrow_back</mat-icon> Mis listas
+        </button>
+        <button mat-raised-button (click)="openInsertDialog()">
+          <mat-icon>add</mat-icon> Añadir a la lista
+        </button>
+      </div>
+
+      @if (myGroups.length !== 0) {
+        <div class="share-with-groups">
+          <span>Compartir "{{ selectedWishlist.name }}" con:</span>
+          @for (group of myGroups; track group.id) {
+            <mat-checkbox
+              [checked]="sharedGroupIds.has(group.id)"
+              (change)="toggleShare(group, $event.checked)"
+            >{{ group.name }}</mat-checkbox>
+          }
+        </div>
+      }
+
+      <div class="table">
+        @if(reloadTable){
+          <app-table [data]="wishList" [isGroup]='false' (tableActionEvent)="tableAction($event)"></app-table>
+        }
+      </div>
+    }
   </div>
 }

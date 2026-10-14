@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService, Credential } from '@auth/auth.service';
-import { ButtonProviderComponent } from '@auth/components';
+import { AuthService, RegisterPayload } from '@auth/auth.service';
 import { MATERIAL_MODULES } from '@shared/material.module';
 import { SnackbarService } from '@shared/snackbar/snackbar.service';
-import { ListService } from 'src/app/services/list.service';
 
 interface RegisterForm {
   email: FormControl<string>;
+  username: FormControl<string>;
   password: FormControl<string>;
 }
 
@@ -16,7 +15,6 @@ interface RegisterForm {
   selector: 'app-singin',
   standalone: true,
   imports: [
-    ButtonProviderComponent,
     MATERIAL_MODULES,
     ReactiveFormsModule,
     RouterModule
@@ -32,7 +30,6 @@ export class SinginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private snackBar: SnackbarService,
-    private list: ListService,
     private _router: Router
   ) {
     this.registerForm = this.fb.group({
@@ -40,28 +37,35 @@ export class SinginComponent {
         validators: [Validators.required, Validators.email],
         nonNullable: true,
       }),
+      username: this.fb.control('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
       password: this.fb.control('', {
-        validators: Validators.required,
+        validators: [Validators.required, Validators.minLength(8)],
         nonNullable: true,
       }),
     });
   }
 
-  async signUp(): Promise<void> {
+  signUp(): void {
     if (this.registerForm.invalid) return;
 
-    const credential: Credential = {
+    const payload: RegisterPayload = {
       email: this.registerForm.value.email || '',
+      username: this.registerForm.value.username || '',
       password: this.registerForm.value.password || '',
     };
 
-    try {
-      const response = await this.auth.signUpWithEmailAndPassword(credential);
-      this.snackBar.showSnackBar('Se ha registrado correctamente', 'succes');
-      this._router.navigateByUrl('/');
-    } catch (error) {
-      console.error(error);
-      this.snackBar.showSnackBar('Ese email ya esta registrado', 'error');
-    }
+    this.auth.registerWithEmailAndPassword(payload).subscribe({
+      next: () => {
+        this.snackBar.showSnackBar('Se ha registrado correctamente', 'succes');
+        this._router.navigateByUrl('/');
+      },
+      error: (error) => {
+        console.error(error);
+        this.snackBar.showSnackBar(error?.error?.error ?? 'Ese email ya esta registrado', 'error');
+      },
+    });
   }
 }

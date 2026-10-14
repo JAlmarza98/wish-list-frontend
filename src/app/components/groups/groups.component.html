@@ -1,52 +1,28 @@
 <div class="container">
-  @if (loadReady && userName === undefined) {
-    <div class="no-groups-container">
-      <div class="no-groups">
-        <p>Para participar en grupos y colaborar con otros usuarios, es necesario que crees un nombre de usuario único. Este nombre será visible para todos los miembros del grupo al que te unas.</p>
-        <form [formGroup]="addUserNameForm">
-          <div class="form">
-            <div>
-              <mat-form-field>
-                <mat-label>Nombre de usuario</mat-label>
-                <input matInput formControlName="userName" />
-                <mat-error>Este campo es obligatorio</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-        </form>
-        <button mat-flat-button [disabled]="addUserNameForm.invalid" (click)="addUserName()">
-          Añade un nombre de usuario
-        </button>
-      </div>
+  @if (loadReady && groupsList.length === 0) {
+  <div class="no-groups-container">
+    <div class="no-groups">
+      <span>Parece que no estas en ningun grupo</span>
+      <button mat-flat-button (click)="createNewGroup()">
+        Crear tu primer grupo
+      </button>
     </div>
-  }
-  @else {
-    @if (loadReady && groupsList.length === 0) {
-    <div class="no-groups-container">
-      <div class="no-groups">
-        <span>Parece que no estas en ningun grupo</span>
-        <button mat-flat-button (click)="createNewGroup()">
-          Crear tu primer grupo
-        </button>
-      </div>
-    </div>
-    }
-
-    @if (loadReady && groupsList.length !== 0) {
-      <div class="table-actions">
-        <button mat-raised-button (click)="createNewGroup()">
-          <mat-icon>add</mat-icon> Crear grupo
-        </button>
-      </div>
-      <div class="groups-container">
-        @for (item of groupsList; track item.id) {
-          <mat-card matRipple [routerLink]="'/group/'+ item.uid">
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>{{ item.members.length}} miembros</mat-card-subtitle>
-          </mat-card>
-        }
-      </div>
-    }
+  </div>
   }
 
+  @if (loadReady && groupsList.length !== 0) {
+    <div class="table-actions">
+      <button mat-raised-button (click)="createNewGroup()">
+        <mat-icon>add</mat-icon> Crear grupo
+      </button>
+    </div>
+    <div class="groups-container">
+      @for (item of groupsList; track item.id) {
+        <mat-card matRipple [routerLink]="'/group/'+ item.id">
+          <mat-card-title>{{ item.name }}</mat-card-title>
+          <mat-card-subtitle>{{ item.member_count }} miembros</mat-card-subtitle>
+        </mat-card>
+      }
+    </div>
+  }
 </div>

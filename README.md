@@ -2,6 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
 
+Necesita el backend de [wish-list-backend](../wish-list-backend) corriendo (ver su README). Antes de arrancar, crea `src/environments/environment.ts` y `src/environments/environment.development.ts` (están en `.gitignore`) exportando `{ apiUrl: '...' }` apuntando a esa API.
+
+## Docker
+
+```
+docker compose up -d --build
+```
+
+Sirve el build de producción (usa `environment.ts`, ajusta `apiUrl` antes de construir) en el puerto `8080`. Apunta tu reverse proxy ahí.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
