@@ -1,36 +1,93 @@
-.container {
+.page {
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 20px;
-  padding: 25px;
+  gap: 18px;
+  padding: 20px 20px 20px 20px;
+  max-width: 560px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .no-member {
-  width: 350px;
-  margin: 0 auto;
-}
-
-.no-member .mat-mdc-card-content {
+  width: 100%;
+  max-width: 320px;
+  margin: 40px auto 0 auto;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
   align-items: center;
+  text-align: center;
+  gap: 14px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }
 
-mat-card {
-  padding: 15px;
-}
-
-.mat-mdc-card-header {
+.group-head {
   display: flex;
-  padding: 16px 16px 0;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
-:host ::ng-deep .mat-mdc-tab-body-wrapper {
-  min-height: 350px;
+.group-head-name {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.members-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.members-row::-webkit-scrollbar {
+  display: none;
+}
+
+.member-pill {
+  flex-shrink: 0;
+  font-family: var(--font-family);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-alt);
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.member-pill.active {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
 }
 
 .group-alone {
@@ -38,5 +95,9 @@ mat-card {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  gap: 14px;
+  height: 320px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }

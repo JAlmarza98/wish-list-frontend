@@ -20,11 +20,11 @@ export interface DeleteConfirmData {
     <p>¿Desea continuar?</p>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-flat-button [mat-dialog-close]="true">Eliminar</button>
+    <button class="pill-button pill-button--ghost" mat-dialog-close>Cancelar</button>
+    <button class="pill-button" [mat-dialog-close]="true">Eliminar</button>
   </mat-dialog-actions>
   `,
-  styles: []
+  styles: [`p { color: var(--color-text-secondary); font-size: 14px; }`]
 })
 export class DeleteFromListComponent {
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: DeleteConfirmData | null) {}

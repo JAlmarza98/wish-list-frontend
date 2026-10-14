@@ -1,47 +1,89 @@
-.no-groups-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.no-groups {
-  min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  width: 350px;
-  gap: 15px;
-  justify-content: center;
-}
-
 .container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
-.table-actions {
+.section-head {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.groups-container {
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.empty-state {
+  width: 100%;
+  min-height: 240px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.groups-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
-.groups-container mat-card {
-  min-width: 160px;
-  padding: 15px;
+.group-chip {
+  flex: 1;
+  background: var(--color-bg-alt);
+  border: none;
+  border-radius: var(--radius-chip);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
+  font-family: var(--font-family);
+  text-align: left;
 }
 
-.groups-container mat-card mat-card-subtitle {
-  font-weight: 200;
-  text-align: end;
+.group-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-mat-form-field {
-  width: 100%;
+.group-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.group-name {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.group-count {
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+}
+
+.group-chip--create {
+  color: var(--color-text-tertiary);
+  opacity: 0.8;
+}
+
+.group-chip--create mat-icon {
+  color: var(--color-text-tertiary);
 }

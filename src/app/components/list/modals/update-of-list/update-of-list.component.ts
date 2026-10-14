@@ -19,8 +19,11 @@ export interface UpdateOfListResult {
   imports: [MATERIAL_MODULES, ReactiveFormsModule],
   templateUrl: './update-of-list.component.html',
   styles: [`
-    mat-form-field {width: 100%;}
-    .image-preview { width: 160px; height: 160px; object-fit: cover; display: block; margin-top: 8px; border-radius: 4px; }
+    .form { display: flex; flex-direction: column; gap: 16px; padding: 6px 2px 2px 2px; }
+    .image-field { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .image-field-actions { display: flex; align-items: center; gap: 4px; }
+    .icon-ghost-button { width: 36px; height: 36px; border-radius: 999px; border: none; background: var(--color-bg-alt); color: var(--color-text-tertiary); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .image-preview { width: 160px; height: 160px; object-fit: cover; display: block; border-radius: 14px; }
   `]
 })
 export class UpdateOfListComponent {

@@ -1,24 +1,41 @@
-<app-toolbar></app-toolbar>
-<div class="container">
+<div class="page">
+  <header class="header">
+    <div class="greeting">
+      <span class="hello">Hola, {{ username }}</span>
+      <span class="title">Tus deseos</span>
+    </div>
+    <div class="header-actions">
+      <div class="avatar">{{ avatarInitial }}</div>
+      <button mat-icon-button aria-label="Cerrar sesión" matTooltip="Cerrar sesión" (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </header>
 
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Mi lista</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <div class="segmented" role="tablist">
+    <button
+      role="tab"
+      class="segment"
+      [class.active]="activeTab === 'lists'"
+      [attr.aria-selected]="activeTab === 'lists'"
+      (click)="activeTab = 'lists'"
+    >Mis listas</button>
+    <button
+      role="tab"
+      class="segment"
+      [class.active]="activeTab === 'groups'"
+      [attr.aria-selected]="activeTab === 'groups'"
+      (click)="activeTab = 'groups'"
+    >Grupos</button>
+  </div>
+
+  <div class="content">
+    @if (activeTab === 'lists') {
       <app-list></app-list>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Grupos en los que estoy</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+    } @else {
       <app-groups></app-groups>
-    </mat-card-content>
-  </mat-card>
-
+    }
+  </div>
 </div>
 <app-loader></app-loader>
 <app-footer></app-footer>

@@ -1,12 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --color-bg: #ffffff;
+  --color-bg-alt: #f6f1ef;
+  --color-surface-tint: #fff1ee;
+  --color-surface-tint-2: #fff8f6;
+  --color-border: #efe8e5;
+  --color-border-tint: #ffe1da;
+  --color-text: #1c1917;
+  --color-text-secondary: #9a8f8c;
+  --color-text-tertiary: #8a7e7a;
+  --color-accent: #f0584a;
+  --color-accent-dark: #d6493c;
+  --color-accent-contrast: #ffffff;
+  --color-danger: #d6493c;
+
+  --radius-card: 20px;
+  --radius-chip: 16px;
+  --radius-control: 14px;
+  --radius-pill: 999px;
+
+  --font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--font-family);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 app-home {
@@ -24,3 +50,205 @@ app-groups-view {
 app-footer {
   margin-top: auto;
 }
+
+/* --- Angular Material reskin: pill controls, warm neutrals, coral accent --- */
+
+.mat-typography {
+  font-family: var(--font-family);
+}
+
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: var(--color-bg);
+  --mdc-elevated-card-container-shape: var(--radius-card);
+  --mdc-outlined-card-container-shape: var(--radius-card);
+  box-shadow: none !important;
+  border: 1px solid var(--color-border);
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button {
+  --mdc-protected-button-container-shape: var(--radius-pill);
+  --mdc-filled-button-container-shape: var(--radius-pill);
+  --mdc-outlined-button-container-shape: var(--radius-pill);
+  --mdc-text-button-container-shape: var(--radius-pill);
+  --mdc-protected-button-container-color: var(--color-accent);
+  --mdc-protected-button-label-text-color: var(--color-accent-contrast);
+  --mdc-filled-button-container-color: var(--color-accent);
+  --mdc-filled-button-label-text-color: var(--color-accent-contrast);
+  --mdc-outlined-button-outline-color: var(--color-border-tint);
+  --mdc-outlined-button-label-text-color: var(--color-text);
+  --mdc-text-button-label-text-color: var(--color-text-secondary);
+  --mat-mdc-button-persistent-ripple-color: var(--color-accent);
+  --mat-mdc-button-ripple-color: rgba(240, 88, 74, 0.12);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.mat-mdc-icon-button {
+  --mdc-icon-button-icon-color: var(--color-text-secondary);
+  --mat-mdc-button-persistent-ripple-color: var(--color-accent);
+  --mat-mdc-button-ripple-color: rgba(240, 88, 74, 0.12);
+}
+
+/* --- Custom form fields (replace mat-form-field everywhere) --- */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-input,
+.field-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg-alt);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  padding: 13px 14px;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: var(--font-family);
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.field-input:focus,
+.field-textarea:focus {
+  background: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+.field-input.invalid,
+.field-textarea.invalid {
+  border-color: var(--color-danger);
+}
+
+.field-input--with-action {
+  padding-right: 44px;
+}
+
+.field-action {
+  position: absolute;
+  right: 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.field-error {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
+/* --- Shared pill button (used across modals, forms and screens) --- */
+
+.pill-button {
+  font-family: var(--font-family);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 11px 22px;
+  cursor: pointer;
+}
+
+.pill-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pill-button--dark {
+  background: var(--color-text);
+}
+
+.pill-button--ghost {
+  background: var(--color-bg-alt);
+  color: var(--color-text-tertiary);
+}
+
+.pill-button--small {
+  padding: 8px 14px;
+  font-size: 12.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-button--small .mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color: var(--color-accent-contrast);
+  --mdc-checkbox-selected-icon-color: var(--color-accent);
+  --mdc-checkbox-selected-hover-icon-color: var(--color-accent);
+  --mdc-checkbox-selected-focus-icon-color: var(--color-accent);
+}
+
+.mat-mdc-tab-group,
+.mat-mdc-tab-nav-bar {
+  --mat-tab-header-active-label-text-color: var(--color-accent);
+  --mat-tab-header-active-ripple-color: var(--color-accent);
+  --mat-tab-header-inactive-label-text-color: var(--color-text-secondary);
+  --mdc-tab-indicator-active-indicator-color: var(--color-accent);
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--color-accent);
+}
+
+.mdc-snackbar {
+  --mdc-snackbar-container-color: var(--color-text);
+  --mdc-snackbar-supporting-text-color: var(--color-accent-contrast);
+  --mat-snack-bar-button-color: var(--color-accent);
+}
+
+.mat-mdc-menu-panel,
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--radius-card) !important;
+}
+
+.mat-mdc-dialog-title {
+  font-weight: 800 !important;
+}
+

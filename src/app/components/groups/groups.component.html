@@ -1,28 +1,29 @@
 <div class="container">
   @if (loadReady && groupsList.length === 0) {
-  <div class="no-groups-container">
-    <div class="no-groups">
+    <div class="empty-state">
       <span>Parece que no estas en ningun grupo</span>
-      <button mat-flat-button (click)="createNewGroup()">
-        Crear tu primer grupo
-      </button>
+      <button class="pill-button" (click)="createNewGroup()">Crear tu primer grupo</button>
     </div>
-  </div>
   }
 
   @if (loadReady && groupsList.length !== 0) {
-    <div class="table-actions">
-      <button mat-raised-button (click)="createNewGroup()">
-        <mat-icon>add</mat-icon> Crear grupo
-      </button>
+    <div class="section-head">
+      <span class="section-title">Tus grupos</span>
     </div>
-    <div class="groups-container">
+    <div class="groups-grid">
       @for (item of groupsList; track item.id) {
-        <mat-card matRipple [routerLink]="'/group/'+ item.id">
-          <mat-card-title>{{ item.name }}</mat-card-title>
-          <mat-card-subtitle>{{ item.member_count }} miembros</mat-card-subtitle>
-        </mat-card>
+        <a class="group-chip" [routerLink]="'/group/'+ item.id">
+          <div class="group-avatar">{{ item.name.charAt(0).toUpperCase() }}</div>
+          <div class="group-meta">
+            <span class="group-name">{{ item.name }}</span>
+            <span class="group-count">{{ item.member_count }} miembros</span>
+          </div>
+        </a>
       }
+      <button class="group-chip group-chip--create" (click)="createNewGroup()">
+        <mat-icon>add</mat-icon>
+        <span class="group-name">Crear grupo</span>
+      </button>
     </div>
   }
 </div>

@@ -1,11 +1,83 @@
-.container {
+.page {
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 20px;
-  padding: 25px;
+  gap: 24px;
+  padding: 28px 20px 20px 20px;
+  max-width: 560px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-mat-card-content {
-  padding-top: 16px;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hello {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.segmented {
+  display: flex;
+  gap: 8px;
+}
+
+.segment {
+  padding: 9px 20px;
+  border-radius: var(--radius-pill);
+  border: none;
+  font-family: var(--font-family);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-bg-alt);
+  color: var(--color-text-tertiary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.segment.active {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
 }

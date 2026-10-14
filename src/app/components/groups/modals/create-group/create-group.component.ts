@@ -12,7 +12,7 @@ export interface CreateGroupForm {
   imports: [MATERIAL_MODULES, ReactiveFormsModule],
   templateUrl: './create-group.component.html',
   styles: [`
-    mat-form-field {width: 100%;}
+    mat-dialog-content { padding-top: 4px; }
   `]
 })
 export class CreateGroupComponent {

@@ -22,8 +22,9 @@ export interface AddToListResult {
   imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MATERIAL_MODULES, ReactiveFormsModule],
   templateUrl: './add-to-list.component.html',
   styles: [`
-    mat-form-field {width: 100%;}
-    .image-preview { width: 160px; height: 160px; object-fit: cover; display: block; margin-top: 8px; border-radius: 4px; }
+    .form { display: flex; flex-direction: column; gap: 16px; padding: 6px 2px 2px 2px; }
+    .image-field { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .image-preview { width: 160px; height: 160px; object-fit: cover; display: block; border-radius: 14px; }
   `]
 })
 export class AddToListComponent implements OnInit {

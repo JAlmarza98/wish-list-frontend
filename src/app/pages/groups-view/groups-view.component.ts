@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FooterComponent } from '@shared/footer/footer.component';
 import { LoaderComponent } from '@shared/loader/loader.component';
 import { MATERIAL_MODULES } from '@shared/material.module';
-import { ToolbarComponent } from '@shared/toolbar/toolbar.component';
 import { GroupsService } from 'src/app/services/groups.service';
 import { LoaderService } from '@shared/loader/loader.service';
 import { WishesService } from 'src/app/services/wishes.service';
@@ -19,7 +18,7 @@ import { mapWish } from 'src/app/services/wish-mapper';
 @Component({
   selector: 'app-groups-view',
   standalone: true,
-  imports: [MATERIAL_MODULES, RouterModule, ToolbarComponent, FooterComponent, LoaderComponent, TableComponent],
+  imports: [MATERIAL_MODULES, RouterModule, FooterComponent, LoaderComponent, TableComponent],
   templateUrl: './groups-view.component.html',
   styleUrl: './groups-view.component.css'
 })
@@ -28,6 +27,7 @@ export class GroupsViewComponent implements OnInit {
   groupID!: string;
   groupName = '';
   groupList: List[] = [];
+  selectedIndex = 0;
   loadReady: boolean = false;
   me: string;
   reloadTable = false;
@@ -40,6 +40,7 @@ export class GroupsViewComponent implements OnInit {
     private route: ActivatedRoute,
     private invitesService: InvitesService,
     private auth: AuthService,
+    private router: Router,
     private clipboard: Clipboard,
     private snackbar: SnackbarService,
   ) {
@@ -77,6 +78,10 @@ export class GroupsViewComponent implements OnInit {
           list: (list.wishes as any[]).map(mapWish),
         }));
 
+      if (this.selectedIndex >= this.groupList.length) {
+        this.selectedIndex = 0;
+      }
+
       this.loadReady = true;
       this.reloadTable = true;
       this.isTableVisible = true;
@@ -90,6 +95,13 @@ export class GroupsViewComponent implements OnInit {
     }, (err) => {
       console.log(err);
       this.snackbar.showSnackBar('No se ha podido crear la invitación', 'error');
+    });
+  }
+
+  logOut(): void {
+    this.auth.logOut().subscribe({
+      next: () => this.router.navigateByUrl('/auth/login'),
+      error: (error) => console.log(error),
     });
   }
 

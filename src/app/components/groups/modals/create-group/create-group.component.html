@@ -1,21 +1,19 @@
 <h2 mat-dialog-title>Crear grupo</h2>
 <mat-dialog-content>
   <form [formGroup]="createGroupForm">
-    <div class="form">
-      <div>
-        <mat-form-field>
-          <mat-label>Nombre del grupo</mat-label>
-          <input matInput formControlName="name" />
-          <mat-error>Este campo es obligatorio</mat-error>
-        </mat-form-field>
-      </div>
+    <div class="field-group">
+      <label class="field-label" for="group-name">Nombre del grupo</label>
+      <input id="group-name" class="field-input" formControlName="name" />
+      @if (createGroupForm.controls['name'].touched && createGroupForm.controls['name'].invalid) {
+        <span class="field-error">Este campo es obligatorio</span>
+      }
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancelar</button>
+  <button class="pill-button pill-button--ghost" mat-dialog-close>Cancelar</button>
   <button
-    mat-flat-button
+    class="pill-button"
     [mat-dialog-close]="createGroupForm.value"
     [disabled]="createGroupForm.invalid"
   >

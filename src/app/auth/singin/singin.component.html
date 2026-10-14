@@ -7,54 +7,61 @@
     <form [formGroup]="registerForm" (ngSubmit)="signUp()">
 
       <div class="form">
-        <div>
-          <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" />
-            @if (this.registerForm.controls['email'].hasError('required')) {
-              <mat-error>Este campo es obligatorio</mat-error>
-            }
-            @if (!this.registerForm.controls['email'].hasError('required') && this.registerForm.controls['email'].hasError('email')) {
-              <mat-error>Por favor introduce un email valido</mat-error>
-            }
-          </mat-form-field>
+        <div class="field-group">
+          <label class="field-label" for="register-email">Email</label>
+          <input
+            id="register-email"
+            class="field-input"
+            [class.invalid]="registerForm.controls['email'].touched && registerForm.controls['email'].invalid"
+            type="email"
+            formControlName="email"
+          />
+          @if (registerForm.controls['email'].touched && registerForm.controls['email'].hasError('required')) {
+            <span class="field-error">Este campo es obligatorio</span>
+          }
+          @if (!registerForm.controls['email'].hasError('required') && registerForm.controls['email'].hasError('email')) {
+            <span class="field-error">Por favor introduce un email valido</span>
+          }
         </div>
 
-        <div>
-          <mat-form-field>
-            <mat-label>Nombre de usuario</mat-label>
-            <input matInput formControlName="username" />
-            <mat-error>Este campo es obligatorio</mat-error>
-          </mat-form-field>
+        <div class="field-group">
+          <label class="field-label" for="register-username">Nombre de usuario</label>
+          <input
+            id="register-username"
+            class="field-input"
+            [class.invalid]="registerForm.controls['username'].touched && registerForm.controls['username'].invalid"
+            formControlName="username"
+          />
+          @if (registerForm.controls['username'].touched && registerForm.controls['username'].hasError('required')) {
+            <span class="field-error">Este campo es obligatorio</span>
+          }
         </div>
 
-        <div>
-          <mat-form-field>
-            <mat-label>Contraseña</mat-label>
+        <div class="field-group">
+          <label class="field-label" for="register-password">Contraseña</label>
+          <div class="field-wrap">
             <input
-              matInput
+              id="register-password"
+              class="field-input field-input--with-action"
+              [class.invalid]="registerForm.controls['password'].touched && registerForm.controls['password'].invalid"
               [type]="hide ? 'password' : 'text'"
               formControlName="password"
             />
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hide = !hide"
-            >
+            <button type="button" class="field-action" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'">
               <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
             </button>
-            @if (this.registerForm.controls['password'].hasError('required')) {
-              <mat-error>Este campo es obligatorio</mat-error>
-            }
-            @if (!this.registerForm.controls['password'].hasError('required') && this.registerForm.controls['password'].hasError('minlength')) {
-              <mat-error>La contraseña debe tener al menos 8 caracteres</mat-error>
-            }
-          </mat-form-field>
+          </div>
+          @if (registerForm.controls['password'].touched && registerForm.controls['password'].hasError('required')) {
+            <span class="field-error">Este campo es obligatorio</span>
+          }
+          @if (!registerForm.controls['password'].hasError('required') && registerForm.controls['password'].hasError('minlength')) {
+            <span class="field-error">La contraseña debe tener al menos 8 caracteres</span>
+          }
         </div>
       </div>
 
       <div class="form-btn">
-        <button mat-flat-button type="submit" [disabled]="registerForm.invalid">
+        <button class="pill-button" type="submit" [disabled]="registerForm.invalid">
           Registrarse
         </button>
       </div>

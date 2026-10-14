@@ -1,19 +1,26 @@
-<app-toolbar></app-toolbar>
-<div class="container">
+<div class="page">
+  <div class="page-nav">
+    <a class="back-link" routerLink="/">
+      <mat-icon>arrow_back</mat-icon> Inicio
+    </a>
+    <button mat-icon-button aria-label="Cerrar sesión" matTooltip="Cerrar sesión" (click)="logOut()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+
   @if(error) {
-  <mat-card class="no-member">
-    <mat-card-content>
+    <div class="no-member">
       <p>No eres miembro de este grupo</p>
       <p>
         Unicamente puedes ver el contenido de grupos de los que eres miembro
       </p>
-      <button mat-flat-button routerLink="/">Regresa al menu principal</button>
-    </mat-card-content>
-  </mat-card>
-  } @if (loadReady) {
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ groupName }}</mat-card-title>
+      <button class="pill-button" routerLink="/">Regresa al menu principal</button>
+    </div>
+  }
+
+  @if (loadReady) {
+    <div class="group-head">
+      <span class="group-head-name">{{ groupName }}</span>
       <button
         mat-icon-button
         aria-label="Invitar"
@@ -22,32 +29,37 @@
       >
         <mat-icon>share</mat-icon>
       </button>
-    </mat-card-header>
-    <mat-card-content>
-      @if (groupList.length === 0) {
+    </div>
+
+    @if (groupList.length === 0) {
       <div class="group-alone">
         <p>Estas solo en este grupo, invita a alguien</p>
-        <button mat-flat-button (click)="createInvitationLink()">
+        <button class="pill-button" (click)="createInvitationLink()">
           Invita a alguien al grupo
         </button>
       </div>
-      } @else{ @if(isTableVisible){
-      <mat-tab-group>
-        @for (list of groupList; track $index) {
-        <mat-tab [label]="list.user">
-          @if(reloadTable){
+    } @else {
+      <div class="members-row">
+        @for (list of groupList; track list.id; let i = $index) {
+          <button
+            type="button"
+            class="member-pill"
+            [class.active]="selectedIndex === i"
+            (click)="selectedIndex = i"
+          >{{ list.user }}</button>
+        }
+      </div>
+
+      @if(isTableVisible){
+        @if(reloadTable){
           <app-table
-            [data]="list.list"
+            [data]="groupList[selectedIndex].list"
             [isGroup]="true"
             (tableActionEvent)="tableAction($event)"
           ></app-table>
-          }
-        </mat-tab>
         }
-      </mat-tab-group>
-      } }
-    </mat-card-content>
-  </mat-card>
+      }
+    }
   }
 </div>
 <app-loader></app-loader>

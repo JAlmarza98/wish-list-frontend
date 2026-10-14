@@ -11,8 +11,8 @@ import { MATERIAL_MODULES } from '@shared/material.module';
     </mat-toolbar>
   `,
   styles: [`
-    mat-toolbar{ display: flex; justify-content:flex-end; align-items: center;}
-    span {font-size: 11px; color: rgba(150, 150, 150, 0.75)}
+    mat-toolbar{ display: flex; justify-content:flex-end; align-items: center; background: transparent; }
+    span {font-size: 11px; color: var(--color-text-secondary); font-family: var(--font-family);}
   `]
 })
 export class FooterComponent {

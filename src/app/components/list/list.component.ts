@@ -29,6 +29,7 @@ export interface Reserved {
 export interface Wishlist {
   id: string;
   name: string;
+  wish_count?: number;
 }
 
 export interface List {
@@ -73,7 +74,11 @@ export class ListComponent implements OnInit {
       this.wishlists = wishlists;
       this.myGroups = groups;
       this.loadData = true;
-      this._loader.HideLoader();
+      if (wishlists.length === 1) {
+        this.selectWishlist(wishlists[0]);
+      } else {
+        this._loader.HideLoader();
+      }
     }, (err) => {
       this.loadData = true;
       this._loader.HideLoader();
@@ -95,11 +100,19 @@ export class ListComponent implements OnInit {
       this.sharedGroupIds = new Set(shares.map((s: WishlistShare) => s.id));
       this.reloadTable = true;
       this._loader.HideLoader();
+      this.syncWishCount(wishlist.id, wishes.length);
     }, (err) => {
       this._loader.HideLoader();
       this._snackbar.showSnackBar('No se ha podido recuperar la lista', 'error');
       console.log(err);
     });
+  }
+
+  private syncWishCount(wishlistId: string, count: number): void {
+    if (this.selectedWishlist?.id === wishlistId) {
+      this.selectedWishlist = { ...this.selectedWishlist, wish_count: count };
+    }
+    this.wishlists = this.wishlists.map(w => w.id === wishlistId ? { ...w, wish_count: count } : w);
   }
 
   backToWishlists(): void {
