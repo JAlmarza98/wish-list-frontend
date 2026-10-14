@@ -1,37 +1,86 @@
-# WishList
+<p align="center">
+  <img src="public/icons/icon-192.png" width="88" alt="Wishu" />
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+<h1 align="center">Wishu</h1>
+<p align="center"><strong>Listas de deseos que de verdad guardan la sorpresa.</strong></p>
 
-Necesita el backend de [wish-list-backend](../wish-list-backend) corriendo (ver su README). Antes de arrancar, crea `src/environments/environment.ts` y `src/environments/environment.development.ts` (están en `.gitignore`) exportando `{ apiUrl: '...' }` apuntando a esa API.
+<p align="center">
+  Frontend web (Angular) de Wishu. La API vive en <a href="https://github.com/JAlmarza98/wish-list-backend"><code>wish-list-backend</code></a>.
+</p>
 
-## Docker
+---
 
+## El problema
+
+Las wishlists compartidas suelen fallar en lo único que importa: la sorpresa. O bien el dueño de la lista puede ver quién ha reservado cada regalo con solo mirar el código fuente de la página, o directamente no hay forma de coordinarse sin acabar preguntando "¿qué querías al final?" por el grupo de WhatsApp. A eso se suma depender de una app de terceros con publicidad, cuentas obligatorias para todo el mundo y tus datos familiares en un servidor que no controlas.
+
+## Cómo lo resuelve Wishu
+
+- **La sorpresa es real, no solo visual.** El propio servidor nunca envía al dueño de una lista quién ha reservado sus regalos — no es una columna oculta con CSS, el dato ni siquiera viaja en la respuesta.
+- **Varias listas, cada una con su gente.** Cumpleaños, Navidad, boda... cada lista se comparte de forma explícita con el grupo que tú decidas, no con todo el mundo por defecto.
+- **Grupos para coordinarse de verdad.** Invita con un enlace, reserva un regalo para que nadie más lo repita, y listo.
+- **Con foto de cada regalo**, para que no haya dudas de cuál es.
+- **Tuya, en tu propio servidor.** Sin anuncios, sin analítica de terceros, sin depender de que una empresa decida cerrar el servicio.
+- **Instalable como app** (PWA) — se añade a la pantalla de inicio y funciona como una app nativa, en Android, iOS o escritorio.
+
+## Capturas
+
+| Tus listas | Dentro de una lista | Reservando en un grupo |
+|---|---|---|
+| ![Mis listas](docs/screenshots/mis-listas.jpg) | ![Detalle de una lista](docs/screenshots/lista-detalle.jpg) | ![Reservar un regalo en un grupo](docs/screenshots/grupo-reservado.jpg) |
+
+## Arquitectura
+
+Wishu es dos proyectos independientes:
+
+| Repo | Qué es | Stack |
+|---|---|---|
+| `wish-list-frontend` (este) | La aplicación web | Angular 18, Angular Material, TypeScript |
+| [`wish-list-backend`](https://github.com/JAlmarza98/wish-list-backend) | La API REST | Node.js, Express, PostgreSQL |
+
+El frontend habla con el backend por HTTP, con la sesión en una cookie `httpOnly` (nunca en `localStorage`). Ambos se despliegan de forma independiente, cada uno con su propio Docker.
+
+## Puesta en marcha
+
+Necesitas [`wish-list-backend`](https://github.com/JAlmarza98/wish-list-backend) corriendo (ver su README).
+
+```bash
+npm install
+cp src/environments/environment.example.ts src/environments/environment.ts
+cp src/environments/environment.example.ts src/environments/environment.development.ts
+npm start   # http://localhost:4200
 ```
+
+`environment.ts` y `environment.development.ts` no están en el repo (van en `.gitignore`, solo `environment.example.ts` sí) porque definen a qué API apunta cada build. El ejemplo exporta:
+
+```ts
+export const environment = {
+  apiUrl: 'http://localhost:3000', // o la URL de tu API en producción
+};
+```
+
+### Docker
+
+```bash
 docker compose up -d --build
 ```
 
-Sirve el build de producción (usa `environment.ts`, ajusta `apiUrl` antes de construir) en el puerto `8080`. Apunta tu reverse proxy ahí.
+Construye el bundle de producción (usa `environment.ts` — ajusta `apiUrl` antes de construir) y lo sirve con nginx en el puerto `8080`. Apunta tu reverse proxy ahí.
 
-## Development server
+## Comandos útiles
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+| Comando | Qué hace |
+|---|---|
+| `npm start` | Servidor de desarrollo en `http://localhost:4200` con recarga en caliente |
+| `npm run build` | Build de producción en `dist/` |
+| `npm test` | Tests unitarios (Karma/Jasmine) |
+| `ng generate component ruta/nombre` | Genera un componente standalone |
 
-## Code scaffolding
+## Stack técnico
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Angular 18 (standalone components, sin NgModules) · Angular Material (retemado por completo, sin el azul por defecto) · TypeScript · RxJS · `@angular/service-worker` para la PWA.
 
-## Build
+## Licencia
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+[MIT](LICENSE) © Joel Almarza

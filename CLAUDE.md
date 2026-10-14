@@ -20,14 +20,7 @@ There is no configured lint script (no ESLint/TSLint config present).
 
 ## Required local setup (not in git)
 
-`src/environments/` is gitignored and does not exist in a fresh checkout. It must be created manually before the app builds, with `environment.ts` and `environment.development.ts`, each exporting:
-
-```ts
-export const environment = {
-  apiUrl: 'http://localhost:3000', // wish-list-backend base URL
-};
-```
-Referenced via the `@envs/*` path alias.
+`environment.ts` and `environment.development.ts` under `src/environments/` are gitignored and do not exist in a fresh checkout — copy them from the checked-in `src/environments/environment.example.ts` (the only file in that directory that isn't ignored) and adjust `apiUrl` per build. Referenced via the `@envs/*` path alias.
 
 ## Architecture
 
