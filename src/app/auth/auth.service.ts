@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 
 export interface Credential {
   email: string;
@@ -24,7 +24,7 @@ export interface User {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/auth`;
+  private baseUrl = `${apiUrl()}/auth`;
   private userSubject = new BehaviorSubject<User | null>(null);
 
   readonly authState$ = this.userSubject.asObservable();

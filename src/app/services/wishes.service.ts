@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 import { map, Observable } from 'rxjs';
 import { Wish } from '@components/list/list.component';
 import { mapWish } from './wish-mapper';
@@ -10,7 +10,7 @@ import { mapWish } from './wish-mapper';
 })
 export class WishesService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/wishes`;
+  private baseUrl = `${apiUrl()}/wishes`;
 
   update(id: string, wish: { title: string; description?: string; url?: string }): Observable<Wish> {
     return this.http.patch<any>(`${this.baseUrl}/${id}`, wish).pipe(map(mapWish));

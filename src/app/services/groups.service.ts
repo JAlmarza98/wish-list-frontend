@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 import { Group, GroupDetail } from '@components/groups/groups.component';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class GroupsService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/groups`;
+  private baseUrl = `${apiUrl()}/groups`;
 
   getMyGroups(): Observable<Group[]> {
     return this.http.get<Group[]>(this.baseUrl);

@@ -62,11 +62,15 @@ export const environment = {
 
 ### Docker
 
+Usa la imagen publicada en Docker Hub ([`jalmarza98/wishu-frontend`](https://hub.docker.com/r/jalmarza98/wishu-frontend), `amd64`/`arm64`) — no hace falta compilar nada. La URL de la API se fija **al arrancar el contenedor** (variable `API_URL`), así que la misma imagen sirve para cualquier dominio:
+
 ```bash
-docker compose up -d --build
+API_URL=https://api.tudominio.com docker compose up -d
 ```
 
-Construye el bundle de producción (usa `environment.ts` — ajusta `apiUrl` antes de construir) y lo sirve con nginx en el puerto `8080`. Apunta tu reverse proxy ahí.
+Sirve la app con nginx en el puerto `8080`. Apunta tu reverse proxy ahí.
+
+¿Prefieres construir tu propia imagen en vez de usar la publicada? Cambia `image: jalmarza98/wishu-frontend:1.0.1` por `build: .` en `docker-compose.yml`.
 
 ## Comandos útiles
 

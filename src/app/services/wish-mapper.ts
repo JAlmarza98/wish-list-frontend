@@ -1,5 +1,5 @@
 import { Wish } from '@components/list/list.component';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 
 interface RawWish {
   id: string;
@@ -22,7 +22,7 @@ export function mapWish(raw: RawWish): Wish {
     title: raw.title,
     description: raw.description ?? '',
     url: raw.url ?? '',
-    image: raw.image_path ? `${environment.apiUrl}/uploads/${raw.image_path}` : undefined,
+    image: raw.image_path ? `${apiUrl()}/uploads/${raw.image_path}` : undefined,
     date: formatDate(raw.created_at),
     reserved: raw.reserved_by_username
       ? { reservedBy: raw.reserved_by_username, date: formatDate(raw.reserved_at!) }

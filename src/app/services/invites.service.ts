@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 import { Observable } from 'rxjs';
 
 export interface Invite {
@@ -18,7 +18,7 @@ export interface InvitePreview {
 })
 export class InvitesService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/invites`;
+  private baseUrl = `${apiUrl()}/invites`;
 
   createInvite(groupId: string): Observable<Invite> {
     return this.http.post<Invite>(this.baseUrl, { groupId });

@@ -1,6 +1,8 @@
 services:
   web:
-    build: .
+    image: jalmarza98/wishu-frontend:1.0.1
     restart: unless-stopped
+    environment:
+      API_URL: ${API_URL:?define la URL pública de wish-list-backend, ej. https://api.tudominio.com}
     ports:
       - "8080:80"

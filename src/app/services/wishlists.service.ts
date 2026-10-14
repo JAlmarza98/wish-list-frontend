@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '@envs/environment';
+import { apiUrl } from '../core/runtime-config';
 import { map, Observable } from 'rxjs';
 import { Wish, Wishlist } from '@components/list/list.component';
 import { mapWish } from './wish-mapper';
@@ -15,7 +15,7 @@ export interface WishlistShare {
 })
 export class WishlistsService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/wishlists`;
+  private baseUrl = `${apiUrl()}/wishlists`;
 
   getMyWishlists(): Observable<Wishlist[]> {
     return this.http.get<Wishlist[]>(this.baseUrl);
