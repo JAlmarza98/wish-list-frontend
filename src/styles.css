@@ -243,9 +243,43 @@ app-footer {
   --mat-snack-bar-button-color: var(--color-accent);
 }
 
-.mat-mdc-menu-panel,
+.mdc-snackbar .mdc-snackbar__surface {
+  border-radius: var(--radius-pill) !important;
+  box-shadow: none !important;
+  padding-left: 4px !important;
+}
+
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: var(--radius-card) !important;
+}
+
+.mat-mdc-menu-panel {
+  border-radius: var(--radius-card) !important;
+  box-shadow: none !important;
+  border: 1.5px solid var(--color-border-tint) !important;
+  background: var(--color-bg) !important;
+  padding: 6px !important;
+}
+
+.mat-mdc-menu-item {
+  font-family: var(--font-family) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-control) !important;
+  min-height: 42px !important;
+  color: var(--color-text) !important;
+}
+
+.mat-mdc-menu-item .mat-icon {
+  color: var(--color-text-tertiary);
+}
+
+.mat-mdc-menu-item:hover:not([disabled]) {
+  background: var(--color-surface-tint) !important;
+}
+
+.mat-mdc-menu-item:hover:not([disabled]) .mat-icon {
+  color: var(--color-accent);
 }
 
 .mat-mdc-dialog-title {

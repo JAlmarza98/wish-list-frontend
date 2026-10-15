@@ -5,10 +5,17 @@
       <span class="title">Tus deseos</span>
     </div>
     <div class="header-actions">
-      <div class="avatar">{{ avatarInitial }}</div>
-      <button mat-icon-button aria-label="Cerrar sesión" matTooltip="Cerrar sesión" (click)="logOut()">
-        <mat-icon>logout</mat-icon>
-      </button>
+      <button class="avatar" [matMenuTriggerFor]="accountMenu" aria-label="Cuenta">{{ avatarInitial }}</button>
+      <mat-menu #accountMenu="matMenu">
+        <button mat-menu-item (click)="openChangePassword()">
+          <mat-icon>lock_reset</mat-icon>
+          <span>Cambiar contraseña</span>
+        </button>
+        <button mat-menu-item (click)="logOut()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
     </div>
   </header>
 
