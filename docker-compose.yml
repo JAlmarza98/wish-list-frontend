@@ -1,6 +1,6 @@
 services:
   web:
-    image: jalmarza98/wishu-frontend:1.0.1
+    image: jalmarza98/wishu-frontend:1.1.0
     restart: unless-stopped
     environment:
       API_URL: ${API_URL:?define la URL pública de wish-list-backend, ej. https://api.tudominio.com}

@@ -70,7 +70,7 @@ API_URL=https://api.tudominio.com docker compose up -d
 
 Sirve la app con nginx en el puerto `8080`. Apunta tu reverse proxy ahí.
 
-¿Prefieres construir tu propia imagen en vez de usar la publicada? Cambia `image: jalmarza98/wishu-frontend:1.0.1` por `build: .` en `docker-compose.yml`.
+¿Prefieres construir tu propia imagen en vez de usar la publicada? Cambia `image: jalmarza98/wishu-frontend:1.1.0` por `build: .` en `docker-compose.yml`.
 
 ## Comandos útiles
 
